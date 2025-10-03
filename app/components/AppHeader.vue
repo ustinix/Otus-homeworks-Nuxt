@@ -1,19 +1,7 @@
 <script setup lang="ts">
 import HeaderSearch from './HeaderSearch.vue';
-import type { Product } from '~/types/product';
 import NavMenu from './NavMenu.vue';
 
-const props = defineProps<{
-  products: Product[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'search-update', products: Product[]): void;
-}>();
-
-const handleSearchUpdate = (filteredProducts: Product[]) => {
-  emit('search-update', filteredProducts);
-};
 </script>
 
 <template>
@@ -33,10 +21,7 @@ const handleSearchUpdate = (filteredProducts: Product[]) => {
 
       <div class="toolbar-right">
         <div class="search-section">
-          <HeaderSearch
-            :products="props.products"
-            @update:filtered="handleSearchUpdate"
-          />
+          <HeaderSearch />
         </div>
       </div>
 

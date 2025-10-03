@@ -6,26 +6,23 @@ import { ref, computed, watch } from 'vue'
 const route = useRoute()
 const productsStore = useProductsStore()
 
-// Получаем поисковый запрос из URL
+
 const searchQuery = computed(() => route.query.search as string || '')
 const selectedCategory = ref<string | null>(null)
 
-// Категории из store
+
 const categories = computed(() => {
   const uniqueCategories = new Set(productsStore.products.map(p => p.category))
   return Array.from(uniqueCategories).sort()
 })
 
-// Фильтрация по категории и поиску
 const filteredProducts = computed(() => {
   let filtered = productsStore.products
 
-  // Фильтр по категории
   if (selectedCategory.value) {
     filtered = filtered.filter(product => product.category === selectedCategory.value)
   }
 
-  // Фильтр по поиску
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(product =>
@@ -37,20 +34,12 @@ const filteredProducts = computed(() => {
   return filtered
 })
 
-// Загружаем продукты при входе на страницу
 onMounted(async () => {
   if (productsStore.products.length === 0) {
     await productsStore.fetchProducts()
   }
 })
 
-// Или через watch для реактивности при изменении route
-watch(searchQuery, (newQuery) => {
-  if (newQuery) {
-    // Можно добавить логику highlight/search в store
-    console.log('Search query:', newQuery)
-  }
-})
 </script>
 
 <template>

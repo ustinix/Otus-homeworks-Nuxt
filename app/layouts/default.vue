@@ -8,15 +8,11 @@ onMounted(() => {
   productsStore.fetchProducts()
 })
 
-const handleSearchUpdate = (filteredProducts: Product[]) => {
-  productsStore.updateDisplayedProducts(filteredProducts)
-}
 </script>
 <template>
   <div class="layout">
     <AppHeader
       :products="productsStore.products"
-      @search-update="handleSearchUpdate"
     />
 
     <main class="main">
