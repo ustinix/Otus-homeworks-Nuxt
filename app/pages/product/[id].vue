@@ -3,7 +3,7 @@ import type { Product } from '~/types/product';
 
 const route = useRoute();
 const productId = route.params.id;
-const { data: product, error} = useAsyncData(():Promise<Product> => $fetch(`/api/products/${productId}`))
+const { data: product, error} = await useFetch<Product>(`/api/products/${productId}`)
 </script>
 <template>
   <div class="product-page">
