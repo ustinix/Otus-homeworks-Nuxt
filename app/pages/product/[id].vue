@@ -7,7 +7,7 @@ const { data: product, error} = useAsyncData(():Promise<Product> => $fetch(`/api
 </script>
 <template>
   <div class="product-page">
-      <NuxtLink to="/" class="text-decoration-none">
+      <NuxtLink to="/catalog" class="text-decoration-none">
         <q-btn
           class="q-mb-md"
           outline

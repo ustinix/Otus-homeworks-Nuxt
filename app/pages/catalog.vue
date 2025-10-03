@@ -6,10 +6,8 @@ import { ref, computed, watch } from 'vue'
 const route = useRoute()
 const productsStore = useProductsStore()
 
-
 const searchQuery = computed(() => route.query.search as string || '')
 const selectedCategory = ref<string | null>(null)
-
 
 const categories = computed(() => {
   const uniqueCategories = new Set(productsStore.products.map(p => p.category))
@@ -34,12 +32,6 @@ const filteredProducts = computed(() => {
   return filtered
 })
 
-onMounted(async () => {
-  if (productsStore.products.length === 0) {
-    await productsStore.fetchProducts()
-  }
-})
-
 </script>
 
 <template>
@@ -52,10 +44,7 @@ onMounted(async () => {
         v-model:selected-category="selectedCategory"
         :categories="categories"
     />
-    <div v-if="productsStore.isLoading" class="loading">
-      <q-spinner size="50px" color="primary" />
-    </div>
-    <div v-else class="products-grid">
+    <div class="products-grid">
       <ProductCard
         v-for="product in filteredProducts"
         :key="product.id"

@@ -12,6 +12,10 @@ const handleSearch = () => {
   });
 };
 
+const handleInput = () => {
+  handleSearch();
+};
+
 const handleKeypress = (event: KeyboardEvent) => {
   if (event.key === 'Enter') {
     handleSearch();
@@ -34,6 +38,7 @@ const clearSearch = () => {
       dark
       class="search-field"
       @keypress="handleKeypress"
+      @update:model-value="handleInput"
     >
 
       <template #append>

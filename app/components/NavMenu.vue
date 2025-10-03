@@ -1,14 +1,9 @@
 <script setup lang="ts">
-interface NavLink {
-  to: string;
-  text: string;
-  icon: string;
-}
+import type { NavLink } from '~/types/navlink'
 
 const navLinks: NavLink[] = [
     {to: '/', text: 'Home', icon: 'home' },
     {to: '/catalog', text: 'Catalog', icon: 'dashboard'},
-    {to: '/login', text: 'Login', icon: 'account_circle'},
     {to: '/cart', text: 'Cart', icon: 'shopping_cart'},
 ];
 </script>

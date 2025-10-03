@@ -6,7 +6,6 @@ export const useProductsStore = defineStore('products', () => {
   })
 
   const products = ref<Product[]>([])
-  const displayedProducts = ref<Product[]>([])
   const isLoading = ref(false)
   const error = ref<string | null>(null)
 
@@ -14,7 +13,6 @@ export const useProductsStore = defineStore('products', () => {
   const loadFromCookie = () => {
     if (productsCookie.value && productsCookie.value.length > 0) {
       products.value = productsCookie.value
-      displayedProducts.value = productsCookie.value
     } else {
       console.log('Список товаров пуст')
     }
@@ -39,7 +37,6 @@ export const useProductsStore = defineStore('products', () => {
 
       if (data.value && data.value.length > 0) {
         products.value = data.value
-        displayedProducts.value = data.value
         saveToCookie()
       } else {
         loadFromCookie()
@@ -56,10 +53,6 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
-  const updateDisplayedProducts = (filteredProducts: Product[]) => {
-    displayedProducts.value = filteredProducts
-  }
-
   const initialize = () => {
     loadFromCookie()
     if (products.value.length === 0) {
@@ -70,11 +63,9 @@ export const useProductsStore = defineStore('products', () => {
   initialize()
 
   return {
-  products,
-    displayedProducts,
+    products,
     isLoading,
     error,
     fetchProducts,
-    updateDisplayedProducts
   }
 })
