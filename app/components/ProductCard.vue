@@ -16,7 +16,7 @@ const addToCart = (product: Product) => {
 }
 
 const viewDetails = (product: Product) => {
-  navigateTo(`/products/${product.id}`)
+  navigateTo(`/product/${product.id}`)
 }
 </script>
 <template>
@@ -97,11 +97,15 @@ const viewDetails = (product: Product) => {
 }
 
 .product-image {
-  height: 200px;
+  width: 100%;
+  height: 150px;
   object-fit: contain;
+  margin-bottom: 12px;
 }
 
 .product-title {
+  margin: 8px 0;
+  font-size: 16px;
   line-height: 1.3;
   min-height: 2.6em;
   display: -webkit-box;
@@ -121,7 +125,7 @@ const viewDetails = (product: Product) => {
 }
 
 .product-card {
-  min-height: 480px;
+  min-height: 460px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 

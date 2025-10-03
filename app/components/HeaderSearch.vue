@@ -1,35 +1,26 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import type { Product } from '~/types/product';
-
-const props = defineProps<{
-  products: Product[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'update:filtered', value: Product[]): void;
-}>();
+import { ref } from 'vue';
 
 const searchQuery = ref('');
 
-const filteredProducts = computed(() => {
-  if (!searchQuery.value) return props.products;
+const handleSearch = () => {
+  navigateTo({
+    path: '/catalog',
+    query: searchQuery.value.trim() ? {
+      search: searchQuery.value.trim()
+    } : {}
+  });
+};
 
-  const query = searchQuery.value.toLowerCase();
-  return props.products.filter(
-    product =>
-      product.title?.toLowerCase().includes(query) ||
-      product.description.toLowerCase().includes(query) ||
-      product.price.toString().includes(query)
-  );
-});
-
-watch(filteredProducts, newVal => {
-  emit('update:filtered', newVal);
-});
+const handleKeypress = (event: KeyboardEvent) => {
+  if (event.key === 'Enter') {
+    handleSearch();
+  }
+};
 
 const clearSearch = () => {
   searchQuery.value = '';
+  navigateTo('/catalog');
 };
 </script>
 
@@ -37,16 +28,32 @@ const clearSearch = () => {
   <div class="search-container">
     <q-input
       v-model="searchQuery"
-      placeholder="Search by product name..."
+      placeholder="Search products..."
       outlined
       dense
       dark
       class="search-field"
-      clearable
-      @clear="clearSearch"
+      @keypress="handleKeypress"
     >
-      <template #prepend>
-        <q-icon name="search" />
+
+      <template #append>
+        <q-btn
+          v-if="searchQuery"
+          flat
+          dense
+          round
+          icon="close"
+          @click="clearSearch"
+          class="clear-btn"
+        />
+        <q-btn
+          color="grey-1"
+          flat
+          dense
+          round
+          icon="search"
+          @click="handleSearch"
+        />
       </template>
     </q-input>
   </div>
@@ -54,14 +61,41 @@ const clearSearch = () => {
 
 <style scoped>
 .search-container {
-  max-width: 310px;
-  min-width: 310px;
   display: flex;
   align-items: center;
 }
 
 .search-field {
   width: 100%;
+  max-width: 310px;
+  min-width: 310px;
 }
 
+@media (max-width: 1024px) {
+  .search-field {
+    max-width: 280px;
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-field {
+    max-width: 250px;
+    min-width: 250px;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-field {
+    max-width: 200px;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-field {
+    max-width: 180px;
+    min-width: 180px;
+  }
+}
 </style>

@@ -1,35 +1,70 @@
 <script setup lang="ts">
 import ProductCard from '~/components/ProductCard.vue'
 import ProductFilter from '~/components/ProductFilter.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
+const route = useRoute()
 const productsStore = useProductsStore()
 
+// Получаем поисковый запрос из URL
+const searchQuery = computed(() => route.query.search as string || '')
 const selectedCategory = ref<string | null>(null)
 
+// Категории из store
 const categories = computed(() => {
   const uniqueCategories = new Set(productsStore.products.map(p => p.category))
   return Array.from(uniqueCategories).sort()
 })
 
+// Фильтрация по категории и поиску
 const filteredProducts = computed(() => {
-  if (!selectedCategory.value) return productsStore.displayedProducts
+  let filtered = productsStore.products
 
-  return productsStore.displayedProducts.filter(
-    product => product.category === selectedCategory.value
-  )
+  // Фильтр по категории
+  if (selectedCategory.value) {
+    filtered = filtered.filter(product => product.category === selectedCategory.value)
+  }
+
+  // Фильтр по поиску
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(product =>
+      product.title?.toLowerCase().includes(query) ||
+      product.description.toLowerCase().includes(query)
+    )
+  }
+
+  return filtered
+})
+
+// Загружаем продукты при входе на страницу
+onMounted(async () => {
+  if (productsStore.products.length === 0) {
+    await productsStore.fetchProducts()
+  }
+})
+
+// Или через watch для реактивности при изменении route
+watch(searchQuery, (newQuery) => {
+  if (newQuery) {
+    // Можно добавить логику highlight/search в store
+    console.log('Search query:', newQuery)
+  }
 })
 </script>
 
 <template>
   <div class="page">
-    <h1 class="page-title">Catalog</h1>
+    <div v-if="searchQuery" class="search-info q-mb-md">
+      <h3>Search results for: "{{ searchQuery }}"</h3>
+      <p>Found {{ filteredProducts.length }} products</p>
+    </div>
      <ProductFilter
         v-model:selected-category="selectedCategory"
         :categories="categories"
     />
     <div v-if="productsStore.isLoading" class="loading">
-      Loading...
+      <q-spinner size="50px" color="primary" />
     </div>
     <div v-else class="products-grid">
       <ProductCard
@@ -38,8 +73,26 @@ const filteredProducts = computed(() => {
         :product="product"
       />
     </div>
-    <div v-if="!productsStore.isLoading && productsStore.displayedProducts.length === 0" class="empty">
-      Products not found
+    <div v-if="!productsStore.isLoading && filteredProducts.length === 0" class="empty">
+      <q-icon name="search_off" size="xl" />
+      <p>No products found</p>
+      <q-btn
+        v-if="searchQuery"
+        color="primary"
+        label="Clear search"
+        @click="navigateTo('/catalog')"
+      />
     </div>
   </div>
 </template>
+<style scoped>
+.page {
+    max-width: 1700px;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+</style>
