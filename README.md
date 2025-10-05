@@ -11,7 +11,7 @@
 - Поиск по названию и описанию
 - Адаптивный интерфейс
 
-## 🛠 Technology Stack
+## Technology Stack
 
 - **Framework**: Nuxt 3 (SSR)
 - **UI**: Vue 3 Composition API
@@ -20,22 +20,21 @@
 - **TypeScript**: Полная типизация
 - **Deployment**: Netlify (только SSG)
 
-## 🎯 Key Features
+## Key Features
 
 - ✅ Composition API с TypeScript
 - ✅ Клиентская маршрутизация
 - ✅ Работа с состоянием (Pinia)
 - ✅ Адаптивный дизайн
 - ✅ Поиск и фильтрация
-- ✅ Оптимизация производительности
 
-## 🚀 Live Demo
+## Live Demo
 
 ### Только SSG из-за бесплатного доступа Netlify
 
 [Демо на Netlify](https://otus-task-10-2.netlify.app/)
 
-## 💻 Local Development
+## Local Development
 
 # Install dependencies
 npm install
