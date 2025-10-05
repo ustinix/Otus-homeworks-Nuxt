@@ -15,8 +15,8 @@ const addToCart = (product: Product) => {
   console.log('Добавлено в корзину:', product);
 }
 
-const viewDetails = (product: Product) => {
-  navigateTo(`/product/${product.id}`)
+const viewDetails = async (product: Product) => {
+  await navigateTo(`/product/${product.id}`)
 }
 </script>
 <template>

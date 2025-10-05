@@ -3,8 +3,8 @@ import { ref } from 'vue';
 
 const searchQuery = ref('');
 
-const handleSearch = () => {
-  navigateTo({
+const handleSearch = async () => {
+  await navigateTo({
     path: '/catalog',
     query: searchQuery.value.trim() ? {
       search: searchQuery.value.trim()
@@ -12,19 +12,19 @@ const handleSearch = () => {
   });
 };
 
-const handleInput = () => {
-  handleSearch();
+const handleInput = async () => {
+  await handleSearch();
 };
 
-const handleKeypress = (event: KeyboardEvent) => {
+const handleKeypress = async (event: KeyboardEvent) => {
   if (event.key === 'Enter') {
-    handleSearch();
+    await handleSearch();
   }
 };
 
-const clearSearch = () => {
+const clearSearch = async () => {
   searchQuery.value = '';
-  navigateTo('/catalog');
+  await navigateTo('/catalog');
 };
 </script>
 

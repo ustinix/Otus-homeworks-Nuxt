@@ -11,7 +11,7 @@ const selectedCategory = ref<string | null>(null)
 
 const categories = computed(() => {
   const uniqueCategories = new Set(productsStore.products.map(p => p.category))
-  return Array.from(uniqueCategories).sort()
+  return Array.from(uniqueCategories).sort((a, b) => a.localeCompare(b))
 })
 
 const filteredProducts = computed(() => {
@@ -31,6 +31,10 @@ const filteredProducts = computed(() => {
 
   return filtered
 })
+
+const clearSearchAndNavigate = async () => {
+  await navigateTo('/catalog');
+}
 
 </script>
 
@@ -58,7 +62,7 @@ const filteredProducts = computed(() => {
         v-if="searchQuery"
         color="primary"
         label="Clear search"
-        @click="navigateTo('/catalog')"
+        @click="clearSearchAndNavigate"
       />
     </div>
   </div>
